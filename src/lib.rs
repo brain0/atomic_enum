@@ -359,11 +359,10 @@ pub fn atomic_enum(args: TokenStream, input: TokenStream) -> TokenStream {
     let ItemEnum {
         attrs,
         vis,
-        enum_token: _,
         ident,
         generics,
-        brace_token: _,
         variants,
+        ..
     } = parse_macro_input!(input as ItemEnum);
 
     // We only support C-style enums: No generics, no fields
