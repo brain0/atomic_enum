@@ -377,7 +377,8 @@ pub fn atomic_enum(args: TokenStream, input: TokenStream) -> TokenStream {
             syn::Fields::Unit => (),
             _ => {
                 let span = variant.fields.span();
-                let err = quote_spanned! {span=> compile_error!("Expected a variant without fields."); };
+                let err =
+                    quote_spanned! {span=> compile_error!("Expected a variant without fields."); };
                 return err.into();
             }
         }
