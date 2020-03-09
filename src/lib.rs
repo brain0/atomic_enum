@@ -55,11 +55,14 @@ fn enum_definition<'a>(
     ident: &Ident,
     variants: impl IntoIterator<Item = &'a Variant>,
 ) -> TokenStream2 {
+    let attrs = attrs.into_iter();
+    let variants = variants.into_iter();
+
     quote! {
         #(#attrs)*
         #[derive(Debug, Clone, Copy)]
         #vis enum #ident {
-            #(#variants),*
+            #( #variants ),*
         }
     }
 }
