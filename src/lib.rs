@@ -1,3 +1,20 @@
+#![forbid(
+    rust_2018_idioms,
+    future_incompatible,
+    elided_lifetimes_in_paths,
+    unsafe_code
+)]
+#![warn(
+    missing_debug_implementations,
+    missing_docs,
+    trivial_casts,
+    trivial_numeric_casts,
+    unreachable_pub,
+    unused_extern_crates,
+    unused_import_braces,
+    unused_qualifications
+)]
+
 //! An attribute to create an atomic wrapper around a C-style enum.
 //!
 //! Internally, the generated wrapper uses an `AtomicUsize` to store the value.
@@ -22,10 +39,6 @@
 //!
 //! assert_eq!(state.load(Ordering::Relaxed), CatState::Alive);
 //! ```
-
-// Reenable this when https://github.com/rust-lang/rust/issues/42008 is fixed:
-//#![warn(missing_docs)]
-#![forbid(unsafe_code)]
 
 extern crate proc_macro;
 
