@@ -39,6 +39,8 @@
 //!
 //! assert_eq!(state.load(Ordering::Relaxed), CatState::Alive);
 //! ```
+//!
+//! This attribute does not use or generate any unsafe code.
 
 extern crate proc_macro;
 
@@ -336,7 +338,7 @@ fn debug_impl(atomic_ident: &Ident) -> TokenStream2 {
 /// Creates an atomic wrapper around a C-style enum.
 ///
 /// The generated type is a wrapper around `AtomicUsize` that transparently
-/// converts between the stores integer and the enum type. This attribute
+/// converts between the stored integer and the enum type. This attribute
 /// also automatically derives the `Debug`, `Copy` and `Clone` traits on
 /// the enum type.
 ///
