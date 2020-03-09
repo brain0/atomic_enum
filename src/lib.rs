@@ -24,7 +24,7 @@
 //! # Example
 //!
 //! ```
-//! # use atomic_enum_derive::atomic_enum;
+//! # use atomic_enum::atomic_enum;
 //! # use std::sync::atomic::Ordering;
 //! #[atomic_enum]
 //! #[derive(PartialEq)]
@@ -349,7 +349,7 @@ fn debug_impl(atomic_ident: &Ident) -> TokenStream2 {
 /// `Atomic`.
 ///
 /// ```
-/// # use atomic_enum_derive::atomic_enum;
+/// # use atomic_enum::atomic_enum;
 /// #[atomic_enum]
 /// enum State {
 ///     On,
@@ -363,7 +363,7 @@ fn debug_impl(atomic_ident: &Ident) -> TokenStream2 {
 /// as an argument to the attribute.
 ///
 /// ```
-/// # use atomic_enum_derive::atomic_enum;
+/// # use atomic_enum::atomic_enum;
 /// #[atomic_enum(StateAtomic)]
 /// enum State {
 ///     On,
