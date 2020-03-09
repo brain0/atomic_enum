@@ -1,6 +1,6 @@
 [package]
 name = "atomic_enum"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Thomas Bächler <thomas@archlinux.org>"]
 edition = "2018"
 
@@ -9,6 +9,9 @@ repository = "https://github.com/brain0/atomic_enum"
 keywords = ["atomic", "enum"]
 categories = ["concurrency"]
 license = "MIT"
+
+[badges]
+maintenance = { status = "passively-maintained" }
 
 [lib]
 proc-macro = true
