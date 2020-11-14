@@ -10,7 +10,6 @@
     trivial_casts,
     trivial_numeric_casts,
     unreachable_pub,
-    unused_extern_crates,
     unused_import_braces,
     unused_qualifications
 )]
@@ -41,8 +40,6 @@
 //! ```
 //!
 //! This attribute does not use or generate any unsafe code.
-
-extern crate proc_macro;
 
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
