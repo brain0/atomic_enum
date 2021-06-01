@@ -237,6 +237,7 @@ fn atomic_enum_compare_and_swap(ident: &Ident) -> TokenStream2 {
         /// Notice that even when using `AcqRel`, the operation might fail and hence just perform an `Acquire` load, but
         /// not have `Release` semantics. Using `Acquire` makes the store part of this operation `Relaxed` if it happens,
         /// and using `Release` makes the load part `Relaxed`.
+        #[allow(deprecated)]
         pub fn compare_and_swap(
             &self,
             current: #ident,
