@@ -1,19 +1,6 @@
-#![forbid(
-    rust_2018_idioms,
-    future_incompatible,
-    elided_lifetimes_in_paths,
-    unsafe_code
-)]
-#![warn(
-    missing_debug_implementations,
-    missing_docs,
-    trivial_casts,
-    trivial_numeric_casts,
-    unreachable_pub,
-    unused_extern_crates,
-    unused_import_braces,
-    unused_qualifications
-)]
+#![forbid(elided_lifetimes_in_paths, unsafe_code)]
+#![deny(clippy::pedantic)]
+#![warn(clippy::all)]
 
 //! An attribute to create an atomic wrapper around a C-style enum.
 //!
@@ -227,30 +214,31 @@ fn atomic_enum_swap(ident: &Ident) -> TokenStream2 {
     }
 }
 
-fn atomic_enum_compare_and_swap(ident: &Ident) -> TokenStream2 {
-    quote! {
-        /// Stores a value into the atomic if the current value is the same as the `current` value.
-        ///
-        /// The return value is always the previous value. If it is equal to `current`, then the value was updated.
-        ///
-        /// `compare_and_swap` also takes an `Ordering` argument which describes the memory ordering of this operation.
-        /// Notice that even when using `AcqRel`, the operation might fail and hence just perform an `Acquire` load, but
-        /// not have `Release` semantics. Using `Acquire` makes the store part of this operation `Relaxed` if it happens,
-        /// and using `Release` makes the load part `Relaxed`.
-        pub fn compare_and_swap(
-            &self,
-            current: #ident,
-            new: #ident,
-            order: std::sync::atomic::Ordering
-        ) -> #ident {
-            Self::from_usize(self.0.compare_and_swap(
-                Self::to_usize(current),
-                Self::to_usize(new),
-                order
-            ))
-        }
-    }
-}
+// Deprecated
+// fn atomic_enum_compare_and_swap(ident: &Ident) -> TokenStream2 {
+//     quote! {
+//         /// Stores a value into the atomic if the current value is the same as the `current` value.
+//         ///
+//         /// The return value is always the previous value. If it is equal to `current`, then the value was updated.
+//         ///
+//         /// `compare_and_swap` also takes an `Ordering` argument which describes the memory ordering of this operation.
+//         /// Notice that even when using `AcqRel`, the operation might fail and hence just perform an `Acquire` load, but
+//         /// not have `Release` semantics. Using `Acquire` makes the store part of this operation `Relaxed` if it happens,
+//         /// and using `Release` makes the load part `Relaxed`.
+//         pub fn compare_and_swap(
+//             &self,
+//             current: #ident,
+//             new: #ident,
+//             order: std::sync::atomic::Ordering
+//         ) -> #ident {
+//             Self::from_usize(self.0.compare_and_swap(
+//                 Self::to_usize(current),
+//                 Self::to_usize(new),
+//                 order
+//             ))
+//         }
+//     }
+// }
 
 fn atomic_enum_compare_exchange(ident: &Ident) -> TokenStream2 {
     quote! {
@@ -386,19 +374,17 @@ pub fn atomic_enum(args: TokenStream, input: TokenStream) -> TokenStream {
     // We only support C-style enums: No generics, no fields
     if !generics.params.is_empty() {
         let span = generics.span();
-        let err = quote_spanned! {span=> compile_error!("Expected an enum without generics."); };
+        let err = quote_spanned! {span => compile_error!("Expected an enum without generics."); };
         return err.into();
     }
 
     for variant in variants.iter() {
-        match variant.fields {
-            syn::Fields::Unit => (),
-            _ => {
-                let span = variant.fields.span();
-                let err =
-                    quote_spanned! {span=> compile_error!("Expected a variant without fields."); };
-                return err.into();
-            }
+        if let syn::Fields::Unit = variant.fields {
+        } else {
+            let span = variant.fields.span();
+            let err =
+                quote_spanned! {span => compile_error!("Expected a variant without fields."); };
+            return err.into();
         }
     }
 
@@ -421,7 +407,7 @@ pub fn atomic_enum(args: TokenStream, input: TokenStream) -> TokenStream {
     let atomic_enum_load = atomic_enum_load(&ident);
     let atomic_enum_store = atomic_enum_store(&ident);
     let atomic_enum_swap = atomic_enum_swap(&ident);
-    let atomic_enum_compare_and_swap = atomic_enum_compare_and_swap(&ident);
+    // let atomic_enum_compare_and_swap = atomic_enum_compare_and_swap(&ident); Deprecated
     let atomic_enum_compare_exchange = atomic_enum_compare_exchange(&ident);
     let atomic_enum_compare_exchange_weak = atomic_enum_compare_exchange_weak(&ident);
 
@@ -437,7 +423,7 @@ pub fn atomic_enum(args: TokenStream, input: TokenStream) -> TokenStream {
             #atomic_enum_load
             #atomic_enum_store
             #atomic_enum_swap
-            #atomic_enum_compare_and_swap
+            // #atomic_enum_compare_and_swap Deprecated.
             #atomic_enum_compare_exchange
             #atomic_enum_compare_exchange_weak
         }
