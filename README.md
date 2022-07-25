@@ -1,12 +1,14 @@
-[![cargo version](https://img.shields.io/crates/v/atomic_enum.svg)](https://crates.io/crates/atomic_enum) 
-[![docs.rs version](https://img.shields.io/docsrs/atomic_enum)](https://docs.rs/atomic_enum/latest/atomic_enum/)
-# atomic_enum
+[![cargo version](https://img.shields.io/crates/v/atomic_enum_2021.svg)](https://crates.io/crates/atomic_enum) 
+[![docs.rs version](https://img.shields.io/docsrs/atomic_enum_2021)](https://docs.rs/atomic_enum_2021/latest/atomic_enum_2021/)
+# atomic_enum_2021
 
  An attribute to create an atomic wrapper around a C-style enum.
 
  Internally, the generated wrapper uses an `AtomicUsize` to store the value.
  The atomic operations have the same semantics as the equivalent operations
  of `AtomicUsize`.
+
+Forked and maintained by `l1npengtul` to remove warnings when compiling for modern versions of Rust.  
 
  # Example
  ```
@@ -28,5 +30,5 @@
 
  This attribute does not use or generate any unsafe code.
 
-# Maintenance Note
-This crate is passively maintained.
+# MSRV
+Rust 2021 Edition (1.56)

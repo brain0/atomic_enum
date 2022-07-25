@@ -1,16 +1,13 @@
 [package]
-name = "atomic_enum"
-version = "0.2.0"
-authors = ["Thomas Bächler <thomas@archlinux.org>"]
+name = "atomic_enum_2021"
+version = "0.1.0"
+authors = ["Thomas Bächler <thomas@archlinux.org>", "l1npengtul <l1npengtul@protonmail.com>"]
 edition = "2021"
-description = "An attribute to create an atomic wrapper around a C-style enum"
-repository = "https://github.com/brain0/atomic_enum"
+description = "An attribute to create an atomic wrapper around a C-style enum, forked for Rust 2021"
+repository = "https://github.com/l1npengtul/atomic_enum"
 keywords = ["atomic", "enum"]
 categories = ["concurrency"]
 license = "MIT"
-
-[badges]
-maintenance = { status = "passively-maintained" }
 
 [lib]
 proc-macro = true
