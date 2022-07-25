@@ -1,4 +1,4 @@
-[![cargo version](https://img.shields.io/crates/v/atomic_enum_2021.svg)](https://crates.io/crates/atomic_enum) 
+[![cargo version](https://img.shields.io/crates/v/atomic_enum_2021.svg)](https://crates.io/crates/atomic_enum_2021) 
 [![docs.rs version](https://img.shields.io/docsrs/atomic_enum_2021)](https://docs.rs/atomic_enum_2021/latest/atomic_enum_2021/)
 # atomic_enum_2021
 
