@@ -392,14 +392,11 @@ pub fn atomic_enum(args: TokenStream, input: TokenStream) -> TokenStream {
     }
 
     for variant in variants.iter() {
-        match variant.fields {
-            syn::Fields::Unit => (),
-            _ => {
-                let span = variant.fields.span();
-                let err =
-                    quote_spanned! {span=> compile_error!("Expected a variant without fields."); };
-                return err.into();
-            }
+        if !matches!(variant.fields, syn::Fields::Unit) {
+            let span = variant.fields.span();
+            let err =
+                quote_spanned! {span=> compile_error!("Expected a variant without fields."); };
+            return err.into();
         }
     }
 
