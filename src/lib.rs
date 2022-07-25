@@ -40,6 +40,8 @@
 //! ```
 //!
 //! This attribute does not use or generate any unsafe code.
+//!
+//! The crate can be used in a `#[no_std]` environment.
 
 use proc_macro::TokenStream;
 use proc_macro2::TokenStream as TokenStream2;
@@ -76,7 +78,7 @@ This type uses an `AtomicUsize` to store the enum value.
 
     quote! {
         #[doc = #atomic_ident_docs]
-        #vis struct #atomic_ident(std::sync::atomic::AtomicUsize);
+        #vis struct #atomic_ident(core::sync::atomic::AtomicUsize);
     }
 }
 
@@ -130,7 +132,7 @@ fn atomic_enum_new(ident: &Ident, atomic_ident: &Ident) -> TokenStream2 {
     quote! {
         #[doc = #atomic_ident_docs]
         pub const fn new(v: #ident) -> #atomic_ident {
-            #atomic_ident(std::sync::atomic::AtomicUsize::new(Self::to_usize(v)))
+            #atomic_ident(core::sync::atomic::AtomicUsize::new(Self::to_usize(v)))
         }
     }
 }
@@ -190,7 +192,7 @@ fn atomic_enum_load(ident: &Ident) -> TokenStream2 {
         /// # Panics
         ///
         /// Panics if order is `Release` or `AcqRel`.
-        pub fn load(&self, order: std::sync::atomic::Ordering) -> #ident {
+        pub fn load(&self, order: core::sync::atomic::Ordering) -> #ident {
             Self::from_usize(self.0.load(order))
         }
     }
@@ -205,7 +207,7 @@ fn atomic_enum_store(ident: &Ident) -> TokenStream2 {
         /// # Panics
         ///
         /// Panics if order is `Acquire` or `AcqRel`.
-        pub fn store(&self, val: #ident, order: std::sync::atomic::Ordering) {
+        pub fn store(&self, val: #ident, order: core::sync::atomic::Ordering) {
             self.0.store(Self::to_usize(val), order)
         }
     }
@@ -218,7 +220,7 @@ fn atomic_enum_swap(ident: &Ident) -> TokenStream2 {
         /// `swap` takes an `Ordering` argument which describes the memory ordering of this operation.
         /// All ordering modes are possible. Note that using `Acquire` makes the store part of this operation `Relaxed`,
         /// and using `Release` makes the load part `Relaxed`.
-        pub fn swap(&self, val: #ident, order: std::sync::atomic::Ordering) -> #ident {
+        pub fn swap(&self, val: #ident, order: core::sync::atomic::Ordering) -> #ident {
             Self::from_usize(self.0.swap(Self::to_usize(val), order))
         }
     }
@@ -238,7 +240,7 @@ fn atomic_enum_compare_and_swap(ident: &Ident) -> TokenStream2 {
             &self,
             current: #ident,
             new: #ident,
-            order: std::sync::atomic::Ordering
+            order: core::sync::atomic::Ordering
         ) -> #ident {
             Self::from_usize(self.0.compare_and_swap(
                 Self::to_usize(current),
@@ -265,8 +267,8 @@ fn atomic_enum_compare_exchange(ident: &Ident) -> TokenStream2 {
             &self,
             current: #ident,
             new: #ident,
-            success: std::sync::atomic::Ordering,
-            failure: std::sync::atomic::Ordering
+            success: core::sync::atomic::Ordering,
+            failure: core::sync::atomic::Ordering
         ) -> Result<#ident, #ident> {
             self.0
                 .compare_exchange(
@@ -298,8 +300,8 @@ fn atomic_enum_compare_exchange_weak(ident: &Ident) -> TokenStream2 {
             &self,
             current: #ident,
             new: #ident,
-            success: std::sync::atomic::Ordering,
-            failure: std::sync::atomic::Ordering
+            success: core::sync::atomic::Ordering,
+            failure: core::sync::atomic::Ordering
         ) -> Result<#ident, #ident> {
             self.0
                 .compare_exchange_weak(
@@ -326,9 +328,9 @@ fn from_impl(ident: &Ident, atomic_ident: &Ident) -> TokenStream2 {
 
 fn debug_impl(atomic_ident: &Ident) -> TokenStream2 {
     quote! {
-        impl std::fmt::Debug for #atomic_ident {
-            fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-                self.load(std::sync::atomic::Ordering::SeqCst).fmt(f)
+        impl core::fmt::Debug for #atomic_ident {
+            fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
+                self.load(core::sync::atomic::Ordering::SeqCst).fmt(f)
             }
         }
     }
