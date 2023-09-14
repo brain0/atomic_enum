@@ -271,7 +271,7 @@ fn atomic_enum_compare_exchange(ident: &Ident) -> TokenStream2 {
             new: #ident,
             success: core::sync::atomic::Ordering,
             failure: core::sync::atomic::Ordering
-        ) -> Result<#ident, #ident> {
+        ) -> core::result::Result<#ident, #ident> {
             self.0
                 .compare_exchange(
                     Self::to_usize(current),
@@ -304,7 +304,7 @@ fn atomic_enum_compare_exchange_weak(ident: &Ident) -> TokenStream2 {
             new: #ident,
             success: core::sync::atomic::Ordering,
             failure: core::sync::atomic::Ordering
-        ) -> Result<#ident, #ident> {
+        ) -> core::result::Result<#ident, #ident> {
             self.0
                 .compare_exchange_weak(
                     Self::to_usize(current),
