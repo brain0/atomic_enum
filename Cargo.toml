@@ -13,6 +13,10 @@ license = "MIT"
 [badges]
 maintenance = { status = "passively-maintained" }
 
+[features]
+default = ["cas"]
+cas = [] # enables compare-and-swap operations on atomics
+
 [lib]
 proc-macro = true
 
