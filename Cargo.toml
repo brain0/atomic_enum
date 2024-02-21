@@ -17,6 +17,6 @@ maintenance = { status = "passively-maintained" }
 proc-macro = true
 
 [dependencies]
-syn = { version = "1.0.98", features = ["full"] }
-quote = "1.0.20"
-proc-macro2 = "1.0.41"
+syn = { version = "2.0.50", features = ["full"] }
+quote = "1.0.35"
+proc-macro2 = "1.0.78"
