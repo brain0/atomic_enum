@@ -332,7 +332,7 @@ fn debug_impl(atomic_ident: &Ident) -> TokenStream2 {
     quote! {
         impl core::fmt::Debug for #atomic_ident {
             fn fmt(&self, f: &mut core::fmt::Formatter) -> core::fmt::Result {
-                self.load(core::sync::atomic::Ordering::SeqCst).fmt(f)
+                core::fmt::Debug::fmt(&self.load(core::sync::atomic::Ordering::SeqCst), f)
             }
         }
     }
