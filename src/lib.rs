@@ -214,6 +214,7 @@ fn atomic_enum_store(ident: &Ident) -> TokenStream2 {
 }
 
 fn atomic_enum_swap(ident: &Ident) -> TokenStream2 {
+    #[cfg(feature = "cas")]
     quote! {
         /// Stores a value into the atomic, returning the previous value.
         ///
@@ -224,9 +225,12 @@ fn atomic_enum_swap(ident: &Ident) -> TokenStream2 {
             Self::from_usize(self.0.swap(Self::to_usize(val), order))
         }
     }
+    #[cfg(not(feature = "cas"))]
+    TokenStream2::new()
 }
 
 fn atomic_enum_compare_and_swap(ident: &Ident) -> TokenStream2 {
+    #[cfg(feature = "cas")]
     quote! {
         /// Stores a value into the atomic if the current value is the same as the `current` value.
         ///
@@ -251,9 +255,12 @@ fn atomic_enum_compare_and_swap(ident: &Ident) -> TokenStream2 {
             ))
         }
     }
+    #[cfg(not(feature = "cas"))]
+    TokenStream2::new()
 }
 
 fn atomic_enum_compare_exchange(ident: &Ident) -> TokenStream2 {
+    #[cfg(feature = "cas")]
     quote! {
         /// Stores a value into the atomic if the current value is the same as the `current` value.
         ///
@@ -283,9 +290,12 @@ fn atomic_enum_compare_exchange(ident: &Ident) -> TokenStream2 {
                 .map_err(Self::from_usize)
         }
     }
+    #[cfg(not(feature = "cas"))]
+    TokenStream2::new()
 }
 
 fn atomic_enum_compare_exchange_weak(ident: &Ident) -> TokenStream2 {
+    #[cfg(feature = "cas")]
     quote! {
         /// Stores a value into the atomic if the current value is the same as the `current` value.
         ///
@@ -316,6 +326,8 @@ fn atomic_enum_compare_exchange_weak(ident: &Ident) -> TokenStream2 {
                 .map_err(Self::from_usize)
         }
     }
+    #[cfg(not(feature = "cas"))]
+    TokenStream2::new()
 }
 
 fn from_impl(ident: &Ident, atomic_ident: &Ident) -> TokenStream2 {

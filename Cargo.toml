@@ -16,6 +16,10 @@ maintenance = { status = "passively-maintained" }
 [lib]
 proc-macro = true
 
+[features]
+default = ["cas"]
+cas = [] # enables compare-and-swap operations on atomics
+
 [dependencies]
 syn = { version = "2.0.50", features = ["full"] }
 quote = "1.0.35"

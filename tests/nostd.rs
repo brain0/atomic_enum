@@ -14,6 +14,7 @@ enum FooBar {
     Bar,
 }
 
+#[cfg(feature = "cas")]
 #[test]
 fn test_no_std_use() {
     let fb = AtomicFooBar::new(FooBar::Foo);
@@ -55,4 +56,15 @@ mod result_conflict {
         let fb = AtomicFooBar::new(FooBar::Foo);
         assert_eq!(fb.load(Ordering::SeqCst), FooBar::Foo);
     }
+}
+
+#[test]
+fn test_load_store() {
+    let original = FooBar::Foo;
+    let fb = AtomicFooBar::new(original);
+    assert_eq!(fb.load(Ordering::SeqCst), original);
+
+    let new = FooBar::Bar;
+    fb.store(new, Ordering::SeqCst);
+    assert_eq!(fb.load(Ordering::SeqCst), new);
 }
