@@ -1,6 +1,6 @@
 [package]
 name = "atomic_enum"
-version = "0.2.0"
+version = "0.3.0"
 authors = ["Thomas Bächler <thomas.baechler@gmx.de>"]
 edition = "2021"
 
