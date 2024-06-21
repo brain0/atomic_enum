@@ -93,20 +93,19 @@ fn enum_to_usize(ident: &Ident) -> TokenStream2 {
 fn enum_from_usize(ident: &Ident, variants: impl IntoIterator<Item = Variant>) -> TokenStream2 {
     let variants_with_const_names: Vec<_> = variants
         .into_iter()
-        .map(|v| v.ident)
-        .map(|id| {
-            let c_id = Ident::new(&format!("USIZE_{}", &id), id.span());
-            (id, c_id)
+        .map(|v| {
+            let c_id = Ident::new(&format!("USIZE_{}", &v.ident), v.ident.span());
+            (v.attrs, v.ident, c_id)
         })
         .collect();
 
     let variant_consts = variants_with_const_names
         .iter()
-        .map(|(id, c_id)| quote! { const #c_id: usize = #ident::#id as usize; });
+        .map(|(attrs, id, c_id)| quote! { #(#attrs)* const #c_id: usize = #ident::#id as usize; });
 
     let variants_back = variants_with_const_names
         .iter()
-        .map(|(id, c_id)| quote! { #c_id => #ident::#id, });
+        .map(|(attrs, id, c_id)| quote! { #(#attrs)* #c_id => #ident::#id, });
 
     quote! {
         fn from_usize(val: usize) -> #ident {
